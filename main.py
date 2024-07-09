@@ -24,7 +24,8 @@ def main(page: ft.Page):
     def add_produto(e):
         quantidade = ft.TextField(label="Quantidade")
         produto = ft.Dropdown(width=100, options=[
-                    ft.dropdown.Option("Picole"),
+                    ft.dropdown.Option("Picolé Comum"),
+                    ft.dropdown.Option("Picolé Recheado"),
                     ft.dropdown.Option("Pote"),
                     ft.dropdown.Option("Casquinha"),
                 ],
@@ -46,12 +47,14 @@ def main(page: ft.Page):
             produto = i['produto'].value
             produtos.append(produto)
             match produto:
-                case "Pote":
-                    valor_unitario = 25
-                case "Picole":
-                    valor_unitario = 2
+                case "Potes":
+                    valor_unitario = 25.00
+                case "Picolé Recheado":
+                    valor_unitario = 2.50
                 case "Casquinha":
-                    valor_unitario = 5
+                    valor_unitario = 5.00
+                case "Picolé Comum":
+                    valor_unitario = 1.00
             preco = int(quantidade) * valor_unitario
 
             coluna_produto.controls.append(
@@ -61,7 +64,7 @@ def main(page: ft.Page):
                 ft.Row(controls=[ft.Text(f"x{quantidade}", color="black")], alignment=ft.MainAxisAlignment.CENTER)
             )
             coluna_preco.controls.append(
-                ft.Row(controls=[ft.Text(f"R${preco}", color="black")], alignment=ft.MainAxisAlignment.CENTER)
+                ft.Row(controls=[ft.Text(f"R${float(preco)}", color="black")], alignment=ft.MainAxisAlignment.CENTER)
             )
 
             
@@ -70,20 +73,25 @@ def main(page: ft.Page):
 
     #Tela do formulario de cadastrar venda
     cadastro_vendas = ft.Column([
-                
-                ft.Container(
-                    ft.IconButton(icon=ft.icons.NAVIGATE_NEXT , on_click=tela2),
-                    alignment=ft.alignment.center,
-                    padding=10  
-                ),
-                ft.Container(
-                    content=ft.IconButton(icon=ft.icons.ADD, on_click=add_produto),
-                    alignment=ft.alignment.bottom_left,
-                    padding=10  
-                ),
-                
+        ft.Row([
+            
+            ft.Container(
+                ft.ElevatedButton(icon=ft.icons.NAVIGATE_NEXT ,text="Continuar" ,on_click=tela2),
+                alignment=ft.alignment.center,
+                padding=10  
+            ),
+            ft.Container(
+                content=ft.ElevatedButton(icon=ft.icons.ADD, text="Adicionar", on_click=add_produto),
+                alignment=ft.alignment.bottom_left,
+                padding=10  
+            ),
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+        spacing=10
+        ),
        ],
-        
+       horizontal_alignment=ft.CrossAxisAlignment.CENTER
+       
        )
     
     coluna_quantidade = ft.Column(
@@ -120,27 +128,41 @@ def main(page: ft.Page):
     vizualizar_compra = ft.ResponsiveRow(
         [
             ft.Column(
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 controls= [
-                            ft.Container(
-                                ft.ElevatedButton(icon=ft.icons.SAVE,text="Salvar", on_click=''),
-                                alignment=ft.alignment.bottom_center,
-                                padding=10,
-                                col={'xs': 12, 'sm': 6, 'md': 4, 'lg': 3}
-
-                            ),
-                            ft.Container(
-                                ft.IconButton(icon=ft.icons.CANCEL, on_click=tela1),
-                                alignment= ft.alignment.top_center,
-                                padding=10,
-                                col={'xs': 12, 'sm': 6, 'md': 4, 'lg': 3}
-                            ),
+                    
                             ft.Container(                                
                                 coluna_de_checkin,                                
-                                bgcolor="white"
+                                bgcolor="white",
+                                
+                            ),
+
+                            ft.Row(
+                                alignment=ft.MainAxisAlignment.CENTER,
+                                controls=[
+                                ft.Container(
+                                    ft.ElevatedButton(icon=ft.icons.SAVE,text="Salvar", on_click=''),
+                                    alignment=ft.alignment.bottom_center,
+                                    padding=10,
+                                    col={'xs': 12, 'sm': 6, 'md': 4, 'lg': 3}
+
+                                ),
+                                ft.Container(
+                                    ft.ElevatedButton(icon=ft.icons.CANCEL, text="Cancelar",on_click=tela1),
+                                    alignment= ft.alignment.top_center,
+                                    padding=10,
+                                    col={'xs': 12, 'sm': 6, 'md': 4, 'lg': 3}
+                                    
+                                )
+
+                            ],
+                                
                             )
                             
-                        ],
-                        scroll="auto"
+                       
+                    ],
+                    scroll="auto",
+                    
                     
                 ),
            
